@@ -8,13 +8,23 @@ definitions:
         description: gorm.Model
         type: string
     type: object
+  views.CreatePeopleSwagger:
+    properties:
+      error: {}
+      message:
+        example: CREATE_SUCCESS
+        type: string
+      payload: {}
+      status:
+        example: 200
+        type: integer
+    type: object
   views.DeletePeopleSwagger:
     properties:
       error: {}
       message:
-        example: GET_SUCCESS
+        example: DELETE_SUCCESS
         type: string
-      payload: {}
       status:
         example: 200
         type: integer
@@ -29,6 +39,17 @@ definitions:
         items:
           $ref: '#/definitions/models.Person'
         type: array
+      status:
+        example: 200
+        type: integer
+    type: object
+  views.UpdatePeopleSwagger:
+    properties:
+      error: {}
+      message:
+        example: UPDATE_SUCCESS
+        type: string
+      payload: {}
       status:
         example: 200
         type: integer
@@ -66,21 +87,8 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/views.GetAllPeopleSwagger'
+            $ref: '#/definitions/views.CreatePeopleSwagger'
       summary: Create people
-      tags:
-      - person
-    put:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/views.GetAllPeopleSwagger'
-      summary: Update people
       tags:
       - person
   /people/:id:
@@ -95,6 +103,19 @@ paths:
           schema:
             $ref: '#/definitions/views.DeletePeopleSwagger'
       summary: Delete people
+      tags:
+      - person
+    put:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/views.UpdatePeopleSwagger'
+      summary: Update people
       tags:
       - person
 swagger: "2.0"

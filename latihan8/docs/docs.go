@@ -41,26 +41,6 @@ const docTemplate = `{
                     }
                 }
             },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "person"
-                ],
-                "summary": "Update people",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/views.GetAllPeopleSwagger"
-                        }
-                    }
-                }
-            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -76,13 +56,33 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/views.GetAllPeopleSwagger"
+                            "$ref": "#/definitions/views.CreatePeopleSwagger"
                         }
                     }
                 }
             }
         },
         "/people/:id": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "person"
+                ],
+                "summary": "Update people",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/views.UpdatePeopleSwagger"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "consumes": [
                     "application/json"
@@ -118,15 +118,29 @@ const docTemplate = `{
                 }
             }
         },
+        "views.CreatePeopleSwagger": {
+            "type": "object",
+            "properties": {
+                "error": {},
+                "message": {
+                    "type": "string",
+                    "example": "CREATE_SUCCESS"
+                },
+                "payload": {},
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
         "views.DeletePeopleSwagger": {
             "type": "object",
             "properties": {
                 "error": {},
                 "message": {
                     "type": "string",
-                    "example": "GET_SUCCESS"
+                    "example": "DELETE_SUCCESS"
                 },
-                "payload": {},
                 "status": {
                     "type": "integer",
                     "example": 200
@@ -147,6 +161,21 @@ const docTemplate = `{
                         "$ref": "#/definitions/models.Person"
                     }
                 },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
+        "views.UpdatePeopleSwagger": {
+            "type": "object",
+            "properties": {
+                "error": {},
+                "message": {
+                    "type": "string",
+                    "example": "UPDATE_SUCCESS"
+                },
+                "payload": {},
                 "status": {
                     "type": "integer",
                     "example": 200

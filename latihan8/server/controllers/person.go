@@ -53,7 +53,7 @@ func (p *PersonController) GetPeople(ctx *gin.Context) {
 // @Tags person
 // @Accept json
 // @Produce json
-// @Success 200 {object} views.GetAllPeopleSwagger
+// @Success 200 {object} views.CreatePeopleSwagger
 // @Router /people [post]
 func (p *PersonController) CreatePeople(ctx *gin.Context) {
 
@@ -82,8 +82,8 @@ func (p *PersonController) CreatePeople(ctx *gin.Context) {
 // @Tags person
 // @Accept json
 // @Produce json
-// @Success 200 {object} views.GetAllPeopleSwagger
-// @Router /people [put]
+// @Success 200 {object} views.UpdatePeopleSwagger
+// @Router /people/:id [put]
 func (p *PersonController) UpdatePeople(ctx *gin.Context) {
 
 	var people []models.Person

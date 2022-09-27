@@ -7,6 +7,14 @@ type GetAllPeopleSwagger struct {
 	Payload []models.Person
 }
 
+type CreatePeopleSwagger struct {
+	ResponseCreate
+}
+
+type UpdatePeopleSwagger struct {
+	ResponseUpdate
+}
+
 type DeletePeopleSwagger struct {
-	Response
+	ResponseDelete
 }
