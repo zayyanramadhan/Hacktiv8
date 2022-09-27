@@ -1,0 +1,100 @@
+basePath: /
+definitions:
+  models.Person:
+    properties:
+      address:
+        type: string
+      name:
+        description: gorm.Model
+        type: string
+    type: object
+  views.DeletePeopleSwagger:
+    properties:
+      error: {}
+      message:
+        example: GET_SUCCESS
+        type: string
+      payload: {}
+      status:
+        example: 200
+        type: integer
+    type: object
+  views.GetAllPeopleSwagger:
+    properties:
+      error: {}
+      message:
+        example: GET_SUCCESS
+        type: string
+      payload:
+        items:
+          $ref: '#/definitions/models.Person'
+        type: array
+      status:
+        example: 200
+        type: integer
+    type: object
+host: localhost:4000
+info:
+  contact:
+    email: zayyanramadhan@gmail.com
+    name: zayyan
+  description: Sample API Spec for Orders
+  termsOfService: http://swagger.io/terms/
+  title: Orders API
+  version: v1.0
+paths:
+  /people:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/views.GetAllPeopleSwagger'
+      summary: Get all people
+      tags:
+      - person
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/views.GetAllPeopleSwagger'
+      summary: Create people
+      tags:
+      - person
+    put:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/views.GetAllPeopleSwagger'
+      summary: Update people
+      tags:
+      - person
+  /people/:id:
+    delete:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/views.DeletePeopleSwagger'
+      summary: Delete people
+      tags:
+      - person
+swagger: "2.0"
