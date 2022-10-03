@@ -1,0 +1,363 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Sample API Spec for Orders",
+        "title": "Orders API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "zayyan",
+            "email": "zayyanramadhan@gmail.com"
+        },
+        "version": "v2.0"
+    },
+    "host": "localhost:8081",
+    "basePath": "/",
+    "paths": {
+        "/orders": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "Get all order with list of items",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/views.GetAllOrderWithItemsSuccess"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "Create Order and create list of items with same order id",
+                "parameters": [
+                    {
+                        "description": "order info",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateOrderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/views.SuccesCreateOrder"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/views.Failed"
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/{id}": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "Update Order By Order id and update list of items with same order id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Order ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "order info",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateOrderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/views.SuccessUpdateOrder"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/views.Failed"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "Delete Order By Order id and delete all list of items with same order id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Order ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/views.SuccessDeleteOrder"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/views.Failed"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.CreateItemRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "Baju"
+                },
+                "itemcode": {
+                    "type": "string",
+                    "example": "A001"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "models.CreateOrderRequest": {
+            "type": "object",
+            "properties": {
+                "customerName": {
+                    "type": "string",
+                    "example": "John Doe"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.CreateItemRequest"
+                    }
+                },
+                "orderedAt": {
+                    "type": "string",
+                    "example": "2021-05-01T00:00:00Z"
+                }
+            }
+        },
+        "models.UpdateItemRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "Baju"
+                },
+                "itemCode": {
+                    "type": "string",
+                    "example": "A001"
+                },
+                "itemId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "quantity": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "models.UpdateOrderRequest": {
+            "type": "object",
+            "properties": {
+                "customerName": {
+                    "description": "OrderID      int                 `json:\"orderid\"`",
+                    "type": "string",
+                    "example": "Zayyan"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.UpdateItemRequest"
+                    }
+                },
+                "orderedAt": {
+                    "type": "string",
+                    "example": "2022-10-01T21:21:21Z"
+                }
+            }
+        },
+        "views.Failed": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "BAD_REQUEST"
+                }
+            }
+        },
+        "views.GetAllOrderWithItemsSuccess": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "OK"
+                },
+                "payload": {
+                    "$ref": "#/definitions/views.OrderGetAll"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
+        "views.ItemGetAll": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "itemCode": {
+                    "type": "string"
+                },
+                "itemId": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "views.OrderGetAll": {
+            "type": "object",
+            "properties": {
+                "customerName": {
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/views.ItemGetAll"
+                    }
+                },
+                "orderId": {
+                    "type": "integer"
+                },
+                "orderedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "views.SuccesCreateOrder": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "CREATED"
+                },
+                "payload": {
+                    "$ref": "#/definitions/views.structSuccessUpdateCreate"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 201
+                }
+            }
+        },
+        "views.SuccessDeleteOrder": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "OK"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
+        "views.SuccessUpdateOrder": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "OK"
+                },
+                "payload": {
+                    "$ref": "#/definitions/views.structSuccessUpdateCreate"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 200
+                }
+            }
+        },
+        "views.structSuccessUpdateCreate": {
+            "type": "object",
+            "properties": {
+                "CustomerName": {
+                    "type": "string",
+                    "example": "Zayyan"
+                },
+                "OrderId": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "OrderedAt": {
+                    "type": "string",
+                    "example": "2022-10-01T21:21:21Z"
+                }
+            }
+        }
+    }
+}

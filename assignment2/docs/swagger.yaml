@@ -1,0 +1,245 @@
+basePath: /
+definitions:
+  models.CreateItemRequest:
+    properties:
+      description:
+        example: Baju
+        type: string
+      itemcode:
+        example: A001
+        type: string
+      quantity:
+        example: 1
+        type: integer
+    type: object
+  models.CreateOrderRequest:
+    properties:
+      customerName:
+        example: John Doe
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/models.CreateItemRequest'
+        type: array
+      orderedAt:
+        example: "2021-05-01T00:00:00Z"
+        type: string
+    type: object
+  models.UpdateItemRequest:
+    properties:
+      description:
+        example: Baju
+        type: string
+      itemCode:
+        example: A001
+        type: string
+      itemId:
+        example: 1
+        type: integer
+      quantity:
+        example: 1
+        type: integer
+    type: object
+  models.UpdateOrderRequest:
+    properties:
+      customerName:
+        description: OrderID      int                 `json:"orderid"`
+        example: Zayyan
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/models.UpdateItemRequest'
+        type: array
+      orderedAt:
+        example: "2022-10-01T21:21:21Z"
+        type: string
+    type: object
+  views.Failed:
+    properties:
+      error:
+        type: string
+      message:
+        example: BAD_REQUEST
+        type: string
+    type: object
+  views.GetAllOrderWithItemsSuccess:
+    properties:
+      message:
+        example: OK
+        type: string
+      payload:
+        $ref: '#/definitions/views.OrderGetAll'
+      status:
+        example: 200
+        type: integer
+    type: object
+  views.ItemGetAll:
+    properties:
+      description:
+        type: string
+      itemCode:
+        type: string
+      itemId:
+        type: integer
+      quantity:
+        type: integer
+    type: object
+  views.OrderGetAll:
+    properties:
+      customerName:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/views.ItemGetAll'
+        type: array
+      orderId:
+        type: integer
+      orderedAt:
+        type: string
+    type: object
+  views.SuccesCreateOrder:
+    properties:
+      message:
+        example: CREATED
+        type: string
+      payload:
+        $ref: '#/definitions/views.structSuccessUpdateCreate'
+      status:
+        example: 201
+        type: integer
+    type: object
+  views.SuccessDeleteOrder:
+    properties:
+      message:
+        example: OK
+        type: string
+      status:
+        example: 200
+        type: integer
+    type: object
+  views.SuccessUpdateOrder:
+    properties:
+      message:
+        example: OK
+        type: string
+      payload:
+        $ref: '#/definitions/views.structSuccessUpdateCreate'
+      status:
+        example: 200
+        type: integer
+    type: object
+  views.structSuccessUpdateCreate:
+    properties:
+      CustomerName:
+        example: Zayyan
+        type: string
+      OrderId:
+        example: 1
+        type: integer
+      OrderedAt:
+        example: "2022-10-01T21:21:21Z"
+        type: string
+    type: object
+host: localhost:8081
+info:
+  contact:
+    email: zayyanramadhan@gmail.com
+    name: zayyan
+  description: Sample API Spec for Orders
+  termsOfService: http://swagger.io/terms/
+  title: Orders API
+  version: v2.0
+paths:
+  /orders:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/views.GetAllOrderWithItemsSuccess'
+      summary: Get all order with list of items
+      tags:
+      - order
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: order info
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/views.SuccesCreateOrder'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/views.Failed'
+      summary: Create Order and create list of items with same order id
+      tags:
+      - order
+  /orders/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/views.SuccessDeleteOrder'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/views.Failed'
+      summary: Delete Order By Order id and delete all list of items with same order
+        id
+      tags:
+      - order
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: order info
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/views.SuccessUpdateOrder'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/views.Failed'
+      summary: Update Order By Order id and update list of items with same order id
+      tags:
+      - order
+swagger: "2.0"
