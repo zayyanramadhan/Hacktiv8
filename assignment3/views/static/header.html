@@ -1,0 +1,22 @@
+{{ define "layout" }}
+<html>
+    <head>
+        <meta http-equiv="refresh" content="15" />
+        <!-- CSS only -->
+<link href="/assets/bootstrap_4_1_3/css/bootstrap.min.css" rel="stylesheet">
+    </head> 
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1 class="text-center">ASSIGNMENT 3</h1>
+                    {{ template "main" .}}
+                </div>
+                <div class="col-md-4">
+                    <h3 class="ml-3">Note :</h3>
+                    {{ template "note" .}}
+                </div>
+            </div>
+        </div>
+
+{{end}}
