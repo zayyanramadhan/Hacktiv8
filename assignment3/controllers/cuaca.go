@@ -21,7 +21,13 @@ type cuaca struct {
 	ClassWind   string
 }
 
+type datajson struct {
+	Water int
+	Wind  int
+}
+
 var filename = "dataJSON/cuaca.json"
+var filenamedata = "dataJSON/datajson.json"
 
 func cekCuaca() []cuaca {
 
@@ -63,6 +69,11 @@ func cekCuaca() []cuaca {
 		ClassWind:   classWind,
 	}
 
+	setDataJson := datajson{
+		Water: water,
+		Wind:  wind,
+	}
+
 	if _, err := os.Stat(filename); errors.Is(err, os.ErrNotExist) {
 
 		dataCuaca := []cuaca{}
@@ -70,6 +81,8 @@ func cekCuaca() []cuaca {
 		dataCuaca = append(dataCuaca, setData)
 		jsonString, _ := json.Marshal(dataCuaca)
 		ioutil.WriteFile(filename, jsonString, os.ModePerm)
+		jsonString2, _ := json.Marshal(setDataJson)
+		ioutil.WriteFile(filenamedata, jsonString2, os.ModePerm)
 		return dataCuaca
 	}
 
@@ -86,6 +99,10 @@ func cekCuaca() []cuaca {
 	jsonString, _ := json.Marshal(dataJSON)
 
 	ioutil.WriteFile(filename, jsonString, os.ModePerm)
+
+	jsonString2, _ := json.Marshal(setDataJson)
+	ioutil.WriteFile(filenamedata, jsonString2, os.ModePerm)
+
 	return dataJSON
 
 }
