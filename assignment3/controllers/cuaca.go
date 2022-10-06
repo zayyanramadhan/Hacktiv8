@@ -26,10 +26,19 @@ type datajson struct {
 	Wind  int
 }
 
+type datajsonstatus struct {
+	Water string
+	Wind  string
+}
+
+type status struct {
+	Status datajson
+}
+
 var filename = "dataJSON/cuaca.json"
 var filenamedata = "dataJSON/datajson.json"
 
-func cekCuaca() []cuaca {
+func cekCuaca() ([]cuaca, status, datajsonstatus) {
 
 	water, wind := genarateCuaca()
 
@@ -74,6 +83,11 @@ func cekCuaca() []cuaca {
 		Wind:  wind,
 	}
 
+	datajsonstatusJson := datajsonstatus{
+		Water: classWater,
+		Wind:  classWind,
+	}
+
 	if _, err := os.Stat(filename); errors.Is(err, os.ErrNotExist) {
 
 		dataCuaca := []cuaca{}
@@ -81,9 +95,12 @@ func cekCuaca() []cuaca {
 		dataCuaca = append(dataCuaca, setData)
 		jsonString, _ := json.Marshal(dataCuaca)
 		ioutil.WriteFile(filename, jsonString, os.ModePerm)
-		jsonString2, _ := json.Marshal(setDataJson)
+		jsonStatus := status{
+			Status: setDataJson,
+		}
+		jsonString2, _ := json.Marshal(jsonStatus)
 		ioutil.WriteFile(filenamedata, jsonString2, os.ModePerm)
-		return dataCuaca
+		return dataCuaca, jsonStatus, datajsonstatusJson
 	}
 
 	plan, _ := ioutil.ReadFile(filename)
@@ -100,10 +117,13 @@ func cekCuaca() []cuaca {
 
 	ioutil.WriteFile(filename, jsonString, os.ModePerm)
 
-	jsonString2, _ := json.Marshal(setDataJson)
+	jsonStatus := status{
+		Status: setDataJson,
+	}
+	jsonString2, _ := json.Marshal(jsonStatus)
 	ioutil.WriteFile(filenamedata, jsonString2, os.ModePerm)
 
-	return dataJSON
+	return dataJSON, jsonStatus, datajsonstatusJson
 
 }
 
@@ -120,17 +140,24 @@ func GetCuacaHandler(w http.ResponseWriter, r *http.Request) {
 
 	if userAgent == "WEB" || userAgent == "" {
 
-		getcuaca := cekCuaca()
+		getcuaca, jsonstatus, datajsonstatus := cekCuaca()
+
+		results := map[string]interface{}{
+			"Realdata":   jsonstatus,
+			"Realstatus": datajsonstatus,
+			"Listdata":   getcuaca,
+		}
 
 		// process as html
 		tpl, err := template.ParseFiles("views/static/index.html", "views/static/header.html", "views/static/note.html")
+
 		if err != nil {
 			writeJsonResponse(w, http.StatusNotFound, map[string]interface{}{
 				"error": err.Error(),
 			})
 			return
 		}
-		tpl.Execute(w, getcuaca)
+		tpl.Execute(w, results)
 		return
 	}
 }
